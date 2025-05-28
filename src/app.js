@@ -1,12 +1,14 @@
 const express=require('express');
 const app=express();
-app.use("/",(req,res)=>{
-    res.send("hello chhaya to your new life from today on");
-});
-app.use("/chhaya",(req,res)=>{
-    res.send("bubu");
-})
+const connectDB=require("./config/database");
+
+//First connect your database and then your app should start listening to server
+connectDB().then(()=>{
+console.log("Database connected successfully");
 app.listen(7777,()=>{
-    console.log(`Server is listening on port 7777`);
-    
+    console.log(`Server is listening on port 7777`);   
 })
+}).catch(err=>{
+console.log("Database cannot be connected");
+});
+
