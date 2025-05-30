@@ -56,16 +56,33 @@ app.delete("/user",async(req,res)=>{
 });
 
 //Updating the user
-app.patch("/user",async(req,res)=>{
-     const userId=req.body.userId;
+app.patch("/user/:userId",async(req,res)=>{
+    //in the coming videos i will use cookies, headers to fetch userId
+     const userId=req.params?.userId;
      const data=req.body;
-     console.log(data);
-     
      try{
-        await User.findByIdAndUpdate({_id:userId},data,{returnDocument});
+        const ALLOWED_UPDATES=["skills","photoURL","about","gender","age"];
+     
+    const isUpdateAllowed=Object.keys(data).every((k)=>
+        ALLOWED_UPDATES.includes(k)
+);
+    if(!isUpdateAllowed){
+        throw new Error("Update not allowed");
+    }
+    if(data?.skills.length>10){
+        throw new Error("Skills cannot be more than 10");
+    }
+  
+      const user= await User.findByIdAndUpdate({_id:userId},data,{
+            returnDocument:"after",
+             runValidators:true, 
+        });
+        console.log(user);       
         res.send("User updated successfully");
-     }catch(err){
-        res.status(400).send("Something went wrong");
+     
+     }
+     catch(err){
+        res.status(400).send("UPDATE FAILED "+err.message);
      } 
 });
 
