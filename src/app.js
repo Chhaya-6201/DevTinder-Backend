@@ -2,23 +2,56 @@ const express=require('express');
 const app=express();
 const connectDB=require("./config/database");
 const User=require("./models/user");
+const {validateSignUpData}=require("./utils/validation");
+const bcrypt=require("bcrypt");
+
 
 //express provides middleware for reading the JSON data. now this middleware will be used for all our routes automatically
 app.use(express.json());
 
 app.post("/signUp",async(req,res)=>{
+try{
+//Validation of the data
+validateSignUpData(req);
+//Encrypt the password
+const{firstName,lastName,emailId,password}=req.body;
 
-//console.log(req.body);
+const passwordHash=await bcrypt.hash(password,10);
+console.log(passwordHash);
 
 //we will create a new instance of our user model and we will add this data to our model
-const user=new User(req.body);
-    try{
+const user=new User({
+    firstName,
+    lastName,
+    emailId,
+    password:passwordHash,
+});
+    
 await user.save();
 res.send("User added successfully");
-}catch(err){
-    res.status(400).send("Error saving the user:"+err.message);
+}
+catch(err){
+    res.status(400).send("Error:"+err.message);
 }
 });
+
+app.post("/login",async(req,res)=>{
+    try{
+    const{emailId,password}=req.body;
+   
+    const user=await User.findOne({emailId:emailId});
+    if(!user){
+        throw new Error("EmailId is not present in DB");
+    }
+    const isPasswordValid=await bcrypt.compare(password,user.password);
+    if(isPasswordValid){
+        res.send("Login successfull");
+    }
+    }catch(err){
+      res.status(400).send("ERROR "+err.message);
+    }
+})
+
 
 //Get user by email
 app.get("/user",async(req,res)=>{
