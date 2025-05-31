@@ -4,10 +4,13 @@ const connectDB=require("./config/database");
 const User=require("./models/user");
 const {validateSignUpData}=require("./utils/validation");
 const bcrypt=require("bcrypt");
+const cookieParser=require("cookie-parser");
+const jwt=require("jsonwebtoken");
 
 
 //express provides middleware for reading the JSON data. now this middleware will be used for all our routes automatically
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signUp",async(req,res)=>{
 try{
@@ -45,6 +48,17 @@ app.post("/login",async(req,res)=>{
     }
     const isPasswordValid=await bcrypt.compare(password,user.password);
     if(isPasswordValid){
+
+    //Create a JWT Token
+
+     const token=await jwt.sign({_id:user._id},"DEV@Tinder$790");
+      console.log(token);
+      
+    /*Add the token to cookie and send the response back 
+    to the user*/
+      
+       res.cookie("token",token);
+
         res.send("Login successfull");
     }
     else{
@@ -54,6 +68,19 @@ app.post("/login",async(req,res)=>{
       res.status(400).send("ERROR "+err.message);
     }
 })
+
+app.get("/profile",async(req,res)=>{
+    const cookies=req.cookies;
+
+   const {token}=cookies;
+   //Validate my token
+
+
+
+    console.log(cookies);
+    res.send("Reading cookies");
+    
+});
 
 
 //Get user by email
