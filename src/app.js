@@ -47,6 +47,9 @@ app.post("/login",async(req,res)=>{
     if(isPasswordValid){
         res.send("Login successfull");
     }
+    else{
+        throw new Error("Password not correct");
+    } 
     }catch(err){
       res.status(400).send("ERROR "+err.message);
     }
