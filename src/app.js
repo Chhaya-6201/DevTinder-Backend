@@ -74,8 +74,10 @@ app.get("/profile",async(req,res)=>{
 
    const {token}=cookies;
    //Validate my token
-
-
+    
+   const decodedMessage=await jwt.verify(token,"DEV@Tinder$790");
+   console.log(decodedMessage);
+   
 
     console.log(cookies);
     res.send("Reading cookies");
