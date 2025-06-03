@@ -56,6 +56,7 @@ const userSchema= new mongoose.Schema({
 
 );
 
+
 //Created user Model
 const userModel=mongoose.model("User",userSchema);
 
