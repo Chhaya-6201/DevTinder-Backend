@@ -1,5 +1,6 @@
 const mongoose=require("mongoose");
 const validator=require("validator");
+const bcrypt=require("bcrypt");
 //Keep your naming convention always camelCasing
 const userSchema= new mongoose.Schema({
     firstName:{
@@ -56,6 +57,21 @@ const userSchema= new mongoose.Schema({
 
 );
 
+//this keyword does not work in arrow function
+userSchema.methods.getJWT=async function(){
+   const user=this;
+
+   const token=await jwt.sign({_id:user._id},"DEV@Tinder$790",{
+            expiresIn:"1d",
+    });
+    return token;
+};
+
+userSchema.methods.validatePassword=async function(){
+    const user=this;
+
+    const isPasswordValid=await bcrypt;
+}
 
 //Created user Model
 const userModel=mongoose.model("User",userSchema);
