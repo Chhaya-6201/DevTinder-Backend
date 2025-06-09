@@ -1,6 +1,6 @@
 const express=require('express');
-const User=require("./models/user");
-const {validateSignUpData}=require("./utils/validation");
+const User=require("../models/user");
+const {validateSignUpData}=require("../utils/validation");
 const bcrypt=require("bcrypt");
 
 const authRouter=express.Router();
@@ -32,7 +32,7 @@ catch(err){
 });
 
 
-app.post("/login",async(req,res)=>{
+authRouter.post("/login",async(req,res)=>{
     try{
     const{emailId,password}=req.body;
    
