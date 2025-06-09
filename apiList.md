@@ -1,6 +1,7 @@
 # DevTinder APIs
 
--POST / signup
+# authRouter
+-POST /signup
 -POST /login
 -POST /logout
 
