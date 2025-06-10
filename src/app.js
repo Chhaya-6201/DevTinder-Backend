@@ -3,7 +3,6 @@ const app=express();
 const connectDB=require("./config/database");
 const cookieParser=require("cookie-parser");
 
-
 //express provides middleware for reading the JSON data. now this middleware will be used for all our routes automatically
 app.use(express.json());
 app.use(cookieParser());
