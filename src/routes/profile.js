@@ -16,19 +16,20 @@ profileRouter.get("/profile/view",userAuth,async(req,res)=>{
     
 });
 
-profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
-//First data validation & then data sanitization
-try{
-if(!validateEditProfileData(req)){
-    throw new Error("Invalid Edit Requests");
-}
-const loggedInUser=req.user;
-console.log(loggedInUser);
+// profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
+// //First data validation & then data sanitization
+// try{
+// if(!validateEditProfileData(req)){
+//     throw new Error("Invalid Edit Requests");
+// }
+// const loggedInUser=req.user;
+// console.log(loggedInUser);
 
-}
-catch(err){
-    res.status(400).send("ERROR : "+err.message);
-}
-});
+// }
+// catch(err){
+//     res.status(400).send("ERROR : "+err.message);
+// }
+// });
+
 
 module.exports=profileRouter;

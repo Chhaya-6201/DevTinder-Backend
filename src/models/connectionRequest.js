@@ -15,7 +15,7 @@ const connectionRequestSchema=new mongoose.Schema({
     required:true,
     // You can create a enum at a place where you want to restrict user from some values
     enum:{
-    values:["ignore","interested","accepted","rejected"],
+    values:["ignored","interested","accepted","rejected"],
     message:`{VALUE} is not supported`
     }
  }
