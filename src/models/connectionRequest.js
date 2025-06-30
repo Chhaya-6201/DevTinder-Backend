@@ -13,13 +13,13 @@ const connectionRequestSchema=new mongoose.Schema({
     },
     status:{
         type:String,
+        required:true,
         //You create enum at a place where you restrict the user for some values
         enum:{
             values:["ignored","interested","accepted","rejected"],
-            message:`${VALUE} is incorrect status type`
-        },
-        required:true
-    }
+            message:`{VALUE} is incorrect status type`,
+        },      
+    },
 },
     {
     timeStamps:true
@@ -27,6 +27,6 @@ const connectionRequestSchema=new mongoose.Schema({
 )
 
 const ConnectionRequestModel=new mongoose.model(
-    "connectionRequest",connectionRequestSchema);
+    "ConnectionRequest",connectionRequestSchema);
 
 module.exports=ConnectionRequestModel;
